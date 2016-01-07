@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -81,8 +82,15 @@ public class MainActivity extends AppCompatActivity {
                     cursor.close();
 
                     Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
+                    setImage(selectedImage);
                 }
         }
+    }
+
+    private void setImage(Bitmap Image){
+        ImageView imageView = (ImageView) findViewById(R.id.ImageView);
+        imageView.setAdjustViewBounds(true);
+        imageView.setImageBitmap(Image);
     }
 
 
