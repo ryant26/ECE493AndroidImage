@@ -1,20 +1,22 @@
 package ece493.imagemanipulation;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.ParcelFileDescriptor;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
+import java.io.FileDescriptor;
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,26 +65,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent returnedImageIntent){
         super.onActivityResult(requestCode, resultCode, returnedImageIntent);
-        // **** Code to handle selected image taken from Stack Overflow ****
-        // http://stackoverflow.com/a/2508138
-
         switch (requestCode){
             case SELECT_IMAGE:
                 if (resultCode == RESULT_OK){
                     Uri selectedImageUri = returnedImageIntent.getData();
-
-                    String[] filePathIndex = {MediaStore.Images.Media.DATA};
-
-                    Cursor cursor = getContentResolver().query(
-                            selectedImageUri, filePathIndex, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathIndex[0]);
-                    String filePath = cursor.getString(columnIndex);
-                    cursor.close();
-
-                    Bitmap selectedImage = BitmapFactory.decodeFile(filePath);
-                    setImage(selectedImage);
+                    try{
+                        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
+                        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                        Bitmap selectedImage = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+                        setImage(selectedImage);
+                    } catch (IOException e){
+                        //TODO Show an error to the user
+                        Log.e("ImageSelect", "Could not open File!!");
+                    }
                 }
         }
     }
