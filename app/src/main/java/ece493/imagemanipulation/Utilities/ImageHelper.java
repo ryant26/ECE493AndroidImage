@@ -1,0 +1,36 @@
+package ece493.imagemanipulation.Utilities;
+
+import android.graphics.Bitmap;
+
+import java.util.List;
+
+/**
+ * Created by ryan on 06/01/16.
+ */
+public class ImageHelper {
+    public Bitmap meanFilter(Bitmap original){
+        return null;
+    }
+
+    public Bitmap medianFilter(Bitmap original){
+         return null;
+    }
+
+    private class MeanConvolutionFilter implements ConvolutionFilter{
+
+        @Override
+        public Integer convolute(List<Integer> mask) {
+            return null;
+        }
+    }
+
+
+    private class MedianConvolutionFiler implements  ConvolutionFilter{
+
+        @Override
+        public Integer convolute(List<Integer> mask) {
+            return null;
+        }
+    }
+
+}
