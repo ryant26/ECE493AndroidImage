@@ -21,6 +21,7 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     private static final int SELECT_IMAGE = 99;
+    private AppManager appManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        appManager = ((AppManager) getApplicationContext());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -72,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
                         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-                        Bitmap selectedImage = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-                        setImage(selectedImage);
+                        appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
+                        setImage();
                     } catch (IOException e){
                         //TODO Show an error to the user
                         Log.e("ImageSelect", "Could not open File!!");
@@ -82,10 +84,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setImage(Bitmap Image){
+    private void setImage(){
         ImageView imageView = (ImageView) findViewById(R.id.ImageView);
         imageView.setAdjustViewBounds(true);
-        imageView.setImageBitmap(Image);
+        imageView.setImageBitmap(appManager.getSelectedBitMap());
     }
 
 
