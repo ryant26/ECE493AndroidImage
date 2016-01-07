@@ -18,7 +18,9 @@ import android.widget.ImageView;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+import ece493.imagemanipulation.Utilities.Observer;
+
+public class MainActivity extends AppCompatActivity implements Observer {
 
     private static final int SELECT_IMAGE = 99;
     private AppManager appManager;
@@ -65,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume(){
+        super.onResume();
+        update();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent returnedImageIntent){
         super.onActivityResult(requestCode, resultCode, returnedImageIntent);
         switch (requestCode){
@@ -75,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
                         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
                         appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
-                        setImage();
+                        update();
                     } catch (IOException e){
                         //TODO Show an error to the user
                         Log.e("ImageSelect", "Could not open File!!");
@@ -84,11 +92,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setImage(){
-        ImageView imageView = (ImageView) findViewById(R.id.ImageView);
-        imageView.setAdjustViewBounds(true);
-        imageView.setImageBitmap(appManager.getSelectedBitMap());
+    @Override
+    public void update() {
+        setImage(appManager.getSelectedBitMap());
     }
 
-
+    private void setImage(Bitmap image) {
+        ImageView imageView = (ImageView) findViewById(R.id.ImageView);
+        imageView.setAdjustViewBounds(true);
+        imageView.setImageBitmap(image);
+    }
 }
