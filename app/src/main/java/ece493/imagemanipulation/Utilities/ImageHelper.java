@@ -16,6 +16,10 @@ public class ImageHelper {
          return null;
     }
 
+    private Bitmap filter(Bitmap original, ConvolutionFilter filter){
+        return null;
+    }
+
     private class MeanConvolutionFilter implements ConvolutionFilter{
 
         @Override
