@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         appManager = ((AppManager) getApplicationContext());
+        appManager.addObserver(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
