@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private static final int SELECT_IMAGE = 99;
     private AppManager appManager;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,18 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        MenuItem meanFilter = menu.findItem(R.id.apply_mean_filter);
+        MenuItem medianFilter = menu.findItem(R.id.apply_median_filter);
+
+        if (appManager.getSelectedBitMap() != null){
+            meanFilter.setEnabled(true);
+            medianFilter.setEnabled(true);
+        }
         return true;
     }
 
@@ -101,6 +114,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     public void update() {
         setImage(appManager.getSelectedBitMap());
+        if (appManager.getSelectedBitMap() != null){
+
+        }
     }
 
     private void setImage(Bitmap image) {
