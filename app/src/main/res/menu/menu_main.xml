@@ -3,8 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ece493.imagemanipulation.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/import_image"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/import_image"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/apply_mean_filter"
+        android:orderInCategory="100"
+        android:title="@string/apply_mean_filter"
+        android:enabled="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/apply_median_filter"
+        android:orderInCategory="100"
+        android:title="@string/apply_median_filter"
+        android:enabled="false"
         app:showAsAction="never" />
 </menu>

@@ -34,21 +34,21 @@ public class MainActivity extends AppCompatActivity implements Observer {
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
-                selectImageIntent.setType("image/*");
-                startActivityForResult(selectImageIntent, SELECT_IMAGE);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
+//                selectImageIntent.setType("image/*");
+//                startActivityForResult(selectImageIntent, SELECT_IMAGE);
+//            }
+//        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        // getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -59,9 +59,14 @@ public class MainActivity extends AppCompatActivity implements Observer {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.import_image:
+                selectImage();
+                return true;
+            case R.id.apply_mean_filter:
+                return true;
+            case R.id.apply_median_filter:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -102,5 +107,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         ImageView imageView = (ImageView) findViewById(R.id.ImageView);
         imageView.setAdjustViewBounds(true);
         imageView.setImageBitmap(image);
+    }
+
+    private void selectImage(){
+        Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
+        selectImageIntent.setType("image/*");
+        startActivityForResult(selectImageIntent, SELECT_IMAGE);
     }
 }
