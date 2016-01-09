@@ -20,7 +20,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
     private AppManager manager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_Settings);
         manager = (AppManager) getApplication();
@@ -37,7 +37,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onClick(View v){
+    public final void onClick(View v){
         int filterSize = Integer.parseInt(filterSizeEntry.getText().toString());
         Bitmap selectedImage = manager.getSelectedBitMap();
         if(filterSize > ImageHelper.getMaxFilterSize(selectedImage)){
@@ -47,7 +47,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
         }
     }
 
-    private void showInvalidFilterDialog(){
+    private final void showInvalidFilterDialog(){
         int maxFilterSize = ImageHelper.getMaxFilterSize(manager.getSelectedBitMap());
         new AlertDialog.Builder(this)
                 .setTitle("Invalid Filter Size")
