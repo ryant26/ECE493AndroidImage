@@ -1,6 +1,5 @@
 package ece493.imagemanipulation.FilterSettingsActivites;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +21,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter_Settings);
+        setContentView(R.layout.activity_filter_settings);
         manager = (AppManager) getApplication();
 
 
@@ -38,7 +37,12 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
 
     @Override
     public final void onClick(View v){
-        int filterSize = Integer.parseInt(filterSizeEntry.getText().toString());
+        int filterSize = 0;
+        try{
+            filterSize = Integer.parseInt(filterSizeEntry.getText().toString());
+        } catch (NumberFormatException e){
+            showInvalidFilterDialog();
+        }
         Bitmap selectedImage = manager.getSelectedBitMap();
         if(filterSize > ImageHelper.getMaxFilterSize(selectedImage)){
             showInvalidFilterDialog();
