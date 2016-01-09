@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FilterSettingsActivity"></activity>
+        <activity android:name=".FilterSettingsActivites.FilterSettingsActivity"></activity>
     </application>
 
 </manifest>

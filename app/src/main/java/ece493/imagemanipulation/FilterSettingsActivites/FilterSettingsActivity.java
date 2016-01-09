@@ -1,4 +1,4 @@
-package ece493.imagemanipulation;
+package ece493.imagemanipulation.FilterSettingsActivites;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import ece493.imagemanipulation.AppManager;
+import ece493.imagemanipulation.R;
 import ece493.imagemanipulation.Utilities.ImageHelper;
 
 public abstract class FilterSettingsActivity extends AppCompatActivity implements View.OnClickListener {
