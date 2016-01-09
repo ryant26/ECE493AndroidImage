@@ -8,6 +8,11 @@ import java.util.List;
  * Created by ryan on 06/01/16.
  */
 public class ImageHelper {
+
+    public static int getMaxFilterSize(Bitmap image){
+        return image.getHeight() > image.getWidth() ? image.getWidth() : image.getHeight();
+    }
+
     public Bitmap meanFilter(Bitmap original){
         return null;
     }
