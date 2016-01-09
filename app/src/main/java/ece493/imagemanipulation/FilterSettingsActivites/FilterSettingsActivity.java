@@ -1,9 +1,11 @@
 package ece493.imagemanipulation.FilterSettingsActivites;
 
 import android.graphics.Bitmap;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +25,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_settings);
         manager = (AppManager) getApplication();
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Set up Widget Bindings
         filterSizeEntry = (EditText) findViewById(R.id.filterSizeEntry);
@@ -33,6 +35,15 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
         Button applyFilterButton = (Button) findViewById(R.id.applyFilterButton);
         applyFilterButton.setOnClickListener(this);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == android.R.id.home){
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -19,8 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FilterSettingsActivites.MeanFilterSettingsActivity"></activity>
-        <activity android:name=".FilterSettingsActivites.MedianFilterSettingsActivity"></activity>
+        <activity android:name=".FilterSettingsActivites.MeanFilterSettingsActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".FilterSettingsActivites.MedianFilterSettingsActivity"
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
