@@ -14,6 +14,6 @@ public class MedianFilterSettingsActivity extends FilterSettingsActivity {
 
     @Override
     protected void applyFilter() {
-    
+
     }
 }
