@@ -6,11 +6,9 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -18,6 +16,8 @@ import android.widget.ImageView;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
+import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
 import ece493.imagemanipulation.Utilities.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
@@ -77,8 +77,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 selectImage();
                 return true;
             case R.id.apply_mean_filter:
+                startSettingsActivity(MeanFilterSettingsActivity.class);
                 return true;
             case R.id.apply_median_filter:
+                startSettingsActivity(MedianFilterSettingsActivity.class);
                 return true;
         }
 
@@ -129,5 +131,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
         Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
         selectImageIntent.setType("image/*");
         startActivityForResult(selectImageIntent, SELECT_IMAGE);
+    }
+
+    private void startSettingsActivity(Class activity){
+        Intent intent = new Intent(this, activity);
+        startActivity(intent);
     }
 }

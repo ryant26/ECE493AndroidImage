@@ -3,4 +3,8 @@
     <string name="import_image">Import Image</string>
     <string name="apply_mean_filter">Apply Mean Filter</string>
     <string name="apply_median_filter">Apply Median Filter</string>
+    <string name="convolution_mask_size">Convolution Mask Size</string>
+    <string name="apply_filter">Apply Filter!</string>
+    <string name="mean_filter_settings">Mean Filter Settings</string>
+    <string name="median_filter_Settings">Median Filter Settings</string>
 </resources>
