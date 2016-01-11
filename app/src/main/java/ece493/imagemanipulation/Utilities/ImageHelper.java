@@ -3,6 +3,8 @@ package ece493.imagemanipulation.Utilities;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
 import ece493.imagemanipulation.AppManager;
@@ -27,7 +29,7 @@ public class ImageHelper {
     }
 
     public void medianFilter(Bitmap original, int filterSize){
-        filter(original, new MeanConvolutionFilter(), filterSize);
+        filter(original, new MedianConvolutionFiler(), filterSize);
     }
 
     private void filter(Bitmap original, final ConvolutionFilter filter, final int filterSize){
@@ -56,7 +58,7 @@ public class ImageHelper {
                                 }
                             }
                         }
-                        newImage[(i*j) + i] = filter.convolute(framePixels);
+                        newImage[(i*j) + i] = filter.convolute(framePixels, pixelCounter);
                     }
                 }
 
@@ -65,28 +67,20 @@ public class ImageHelper {
 
             @Override
             protected void onPostExecute(Bitmap result){
-
+                manager.setSelectedBitMap(result);
             }
         };
-    }
-
-    private class FilterAndImageContainer {
-        public ConvolutionFilter filter;
-        public Bitmap image;
-        public int filterSize;
-
-        public FilterAndImageContainer(ConvolutionFilter filter, Bitmap image, int filterSize){
-            this.image = image;
-            this.filter = filter;
-            this.filterSize = filterSize;
-        }
     }
 
     private class MeanConvolutionFilter implements ConvolutionFilter{
 
         @Override
-        public Integer convolute(int[] mask) {
-            return null;
+        public Integer convolute(int[] mask, int numPixels) {
+            int sum = 0;
+            for (int j=0; j < numPixels; j++){
+                sum += mask[j];
+            }
+            return Math.round((float)sum/numPixels);
         }
     }
 
@@ -94,8 +88,18 @@ public class ImageHelper {
     private class MedianConvolutionFiler implements  ConvolutionFilter{
 
         @Override
-        public Integer convolute(int[] mask) {
-            return null;
+        public Integer convolute(int[] mask, int numPixels) {
+            int [] sorted = Arrays.copyOfRange(mask, 0, numPixels);
+            Arrays.sort(sorted);
+            float median = 0;
+
+            if (sorted.length % 2 == 0){    //Even
+                median = ((float)sorted[sorted.length/2] / sorted[sorted.length/2 - 1])/2;
+            } else {    //Odd
+                median = (float)sorted[sorted.length/2];
+            }
+
+            return Math.round(median);
         }
     }
 
