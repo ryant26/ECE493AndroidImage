@@ -58,7 +58,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
         if(filterSize > ImageHelper.getMaxFilterSize(selectedImage)){
             showInvalidFilterDialog();
         } else {
-            applyFilter();
+            applyFilter(manager.getSelectedBitMap());
         }
     }
 
@@ -75,5 +75,5 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
     protected abstract String getSettingsTitle();
 
     //Should call the appropiate method for each filter type
-    protected abstract void applyFilter();
+    protected abstract void applyFilter(Bitmap image);
 }
