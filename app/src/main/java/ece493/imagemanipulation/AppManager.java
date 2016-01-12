@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.List;
 
+import ece493.imagemanipulation.Utilities.FilterTask;
 import ece493.imagemanipulation.Utilities.Observer;
 
 /**
@@ -14,7 +15,7 @@ import ece493.imagemanipulation.Utilities.Observer;
  */
 public class AppManager extends Application{
     private Bitmap selectedBitMap;
-    private AsyncTask<Bitmap, Void, Bitmap> filterTask;
+    private FilterTask filterTask;
     private List<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer observer){
@@ -27,7 +28,7 @@ public class AppManager extends Application{
         return selectedBitMap;
     }
 
-    public void setFilterTask(AsyncTask filterTask) {
+    public void setFilterTask(FilterTask filterTask) {
         this.filterTask = filterTask;
         this.filterTask.execute(selectedBitMap);
         updateObservers();
@@ -39,14 +40,9 @@ public class AppManager extends Application{
     }
 
     public boolean filterTaskRunning(){
-        if (filterTask != null){
-            AsyncTask.Status status = filterTask.getStatus();
-            if (status != AsyncTask.Status.FINISHED){
-                return true;
-            }else {
-                return false;
-            }
-        } else {
+        try{
+            return !filterTask.isFinishedFiltering();
+        } catch (NullPointerException e){
             return false;
         }
     }

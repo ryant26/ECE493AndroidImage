@@ -8,24 +8,9 @@ import android.content.Context;
  */
 public class DialogHelper {
 
-    private ProgressDialog progressDialog;
-    private Context context;
-
-    public DialogHelper(Context context){
-        this.context=context;
-    }
-
-    public void showProgressDialog(){
-        progressDialog = new ProgressDialog(context);
+    public static ProgressDialog getFilterDialog(Context context){
+        ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Applying Filter");
-        progressDialog.show();
-    }
-
-    public void hideProgressDialog(){
-        try{
-            progressDialog.dismiss();
-        } catch (Exception e){
-            // We don't care about this
-        }
+        return  progressDialog;
     }
 }

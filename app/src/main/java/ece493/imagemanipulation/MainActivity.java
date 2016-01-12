@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
+import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private static final int SELECT_IMAGE = 99;
     private AppManager appManager;
     private Menu menu;
+    private ProgressDialog filterDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setImage(appManager.getSelectedBitMap());
         if(appManager.filterTaskRunning()){
             showProgressDialog();
+        } else {
+            hideFilterDialog();
         }
     }
 
@@ -128,9 +132,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void showProgressDialog(){
-        ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Applying Filter");
-        progressDialog.show();
+        filterDialog = DialogHelper.getFilterDialog(this);
+        filterDialog.show();
+    }
+
+    private void hideFilterDialog(){
+        try{
+            filterDialog.dismiss();
+        } catch (Exception e){
+            //We don't care about this
+        }
     }
 
     private void startSettingsActivity(Class activity){

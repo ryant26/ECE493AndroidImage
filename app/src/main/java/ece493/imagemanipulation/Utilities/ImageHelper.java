@@ -33,48 +33,7 @@ public class ImageHelper {
     }
 
     private void filter(Bitmap original, final ConvolutionFilter filter, final int filterSize){
-        AsyncTask filterTask = new AsyncTask<Bitmap, Void, Bitmap>(){
-            public boolean isFinished = false;
-
-            @Override
-            protected Bitmap doInBackground(Bitmap... params) {
-                Bitmap image = params[0];
-
-                int [] pixels = new int[image.getWidth() * image.getHeight()];
-                int [] framePixels = new int[filterSize * filterSize];
-                int [] newImage = new int[pixels.length];
-
-                image.getPixels(pixels, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
-                int pixelCounter;
-
-                for (int j=0; j < image.getHeight(); j++){
-                    for (int i=0; i < image.getWidth(); i++){
-                        pixelCounter = 0;
-                        for (int frameJ=j-(filterSize/2); frameJ < j + (filterSize/2); frameJ++){
-                            for (int frameI=i-(filterSize/2); frameI < i+(filterSize/2); frameI++){
-                                int framePixelPosition = (frameJ*image.getWidth()) + frameI;
-                                if (framePixelPosition >= 0 && framePixelPosition < pixels.length){
-                                    framePixels[pixelCounter] = pixels[framePixelPosition];
-                                    pixelCounter++;
-                                }
-                            }
-                        }
-                        if (isCancelled()) return null;
-                        newImage[(i*j) + i] = filter.convolute(framePixels, pixelCounter);
-                    }
-                }
-
-                return Bitmap.createBitmap(newImage, image.getWidth(), image.getHeight(), image.getConfig());
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap result){
-                isFinished = true;
-                manager.setSelectedBitMap(result);
-            }
-        };
-
-        manager.setFilterTask(filterTask);
+        manager.setFilterTask(new FilterTask(filterSize, filter, manager));
     }
 
     private class MeanConvolutionFilter implements ConvolutionFilter{
