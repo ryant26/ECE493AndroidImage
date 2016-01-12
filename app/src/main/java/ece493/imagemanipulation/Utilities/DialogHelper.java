@@ -22,6 +22,10 @@ public class DialogHelper {
     }
 
     public void hideProgressDialog(){
-        progressDialog.dismiss();
+        try{
+            progressDialog.dismiss();
+        } catch (Exception e){
+            // We don't care about this
+        }
     }
 }

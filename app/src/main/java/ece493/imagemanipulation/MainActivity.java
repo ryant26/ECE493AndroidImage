@@ -20,8 +20,6 @@ import java.io.IOException;
 
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
-import ece493.imagemanipulation.Utilities.DialogHelper;
-import ece493.imagemanipulation.Utilities.ImageHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
@@ -29,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private static final int SELECT_IMAGE = 99;
     private AppManager appManager;
     private Menu menu;
-    private DialogHelper dialogHelper = new DialogHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +110,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     public void update() {
         setImage(appManager.getSelectedBitMap());
-        if (appManager.filterTaskRunning()){
-            dialogHelper.showProgressDialog();
-        } else {
-            dialogHelper.hideProgressDialog();
+        if(appManager.filterTaskRunning()){
+            showProgressDialog();
         }
     }
 
@@ -130,6 +125,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
         selectImageIntent.setType("image/*");
         startActivityForResult(selectImageIntent, SELECT_IMAGE);
+    }
+
+    private void showProgressDialog(){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Applying Filter");
+        progressDialog.show();
     }
 
     private void startSettingsActivity(Class activity){

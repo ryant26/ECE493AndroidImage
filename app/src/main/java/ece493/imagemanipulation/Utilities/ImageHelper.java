@@ -34,6 +34,7 @@ public class ImageHelper {
 
     private void filter(Bitmap original, final ConvolutionFilter filter, final int filterSize){
         AsyncTask filterTask = new AsyncTask<Bitmap, Void, Bitmap>(){
+            public boolean isFinished = false;
 
             @Override
             protected Bitmap doInBackground(Bitmap... params) {
@@ -68,11 +69,12 @@ public class ImageHelper {
 
             @Override
             protected void onPostExecute(Bitmap result){
+                isFinished = true;
                 manager.setSelectedBitMap(result);
             }
         };
 
-
+        manager.setFilterTask(filterTask);
     }
 
     private class MeanConvolutionFilter implements ConvolutionFilter{
