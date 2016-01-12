@@ -36,17 +36,20 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
         for (int j=0; j < image.getHeight(); j++){
             for (int i=0; i < image.getWidth(); i++){
                 pixelCounter = 0;
-                for (int frameJ=j-(filterSize/2); frameJ < j + (filterSize/2); frameJ++){
-                    for (int frameI=i-(filterSize/2); frameI < i+(filterSize/2); frameI++){
+                for (int frameJ=j-(filterSize/2); frameJ <= j + (filterSize/2); frameJ++){
+                    for (int frameI=i-(filterSize/2); frameI <= i+(filterSize/2); frameI++){
                         int framePixelPosition = (frameJ*image.getWidth()) + frameI;
-                        if (framePixelPosition >= 0 && framePixelPosition < pixels.length){
+                        if (framePixelPosition >= 0 &&
+                                framePixelPosition < pixels.length &&
+                                frameI >=0 &&
+                                frameJ >= 0){
                             framePixels[pixelCounter] = pixels[framePixelPosition];
                             pixelCounter++;
                         }
                     }
                 }
                 if (isCancelled()) return null;
-                newImage[(i*j) + i] = filter.convolute(framePixels, pixelCounter);
+                newImage[(j * image.getWidth()) + i] = filter.convolute(framePixels, pixelCounter);
             }
         }
 

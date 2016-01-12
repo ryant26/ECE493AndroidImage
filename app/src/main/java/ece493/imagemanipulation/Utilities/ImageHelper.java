@@ -40,11 +40,18 @@ public class ImageHelper {
 
         @Override
         public Integer convolute(int[] mask, int numPixels) {
-            int sum = 0;
+            int R=0, G=0, B=0;
             for (int j=0; j < numPixels; j++){
-                sum += mask[j];
+                R += (mask[j] >> 16) & 0xff;
+                G += (mask[j] >> 8) & 0xff;
+                B += mask[j] & 0xff;
             }
-            return Math.round((float)sum/numPixels);
+            R = Math.round((float)R/numPixels);
+            G = Math.round((float)G/numPixels);
+            B = Math.round((float)B/numPixels);
+
+            return 0xff000000 | (R << 16) | (G << 8) | B;
+
         }
     }
 
