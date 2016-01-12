@@ -2,6 +2,7 @@ package ece493.imagemanipulation;
 
 import android.app.Application;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import ece493.imagemanipulation.Utilities.Observer;
  */
 public class AppManager extends Application{
     private Bitmap selectedBitMap;
+    private AsyncTask<Bitmap, Void, Bitmap> filterTask;
     private List<Observer> observers = new ArrayList<>();
 
     public void addObserver(Observer observer){
@@ -25,9 +27,32 @@ public class AppManager extends Application{
         return selectedBitMap;
     }
 
+    public void setFilterTask(AsyncTask filterTask) {
+        this.filterTask = filterTask;
+        this.filterTask.execute(selectedBitMap);
+        updateObservers();
+    }
+
     public void setSelectedBitMap(Bitmap selectedBitMap) {
+        if (filterTaskRunning()){
+            filterTask.cancel(true);
+            filterTask = null;
+        }
         this.selectedBitMap = selectedBitMap;
         updateObservers();
+    }
+
+    public boolean filterTaskRunning(){
+        if (filterTask != null){
+            AsyncTask.Status status = filterTask.getStatus();
+            if (status != AsyncTask.Status.FINISHED){
+                return true;
+            }else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     private void updateObservers(){
@@ -35,5 +60,7 @@ public class AppManager extends Application{
             ob.update();
         }
     }
+
+
 
 }

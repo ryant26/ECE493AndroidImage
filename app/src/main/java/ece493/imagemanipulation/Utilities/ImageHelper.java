@@ -58,6 +58,7 @@ public class ImageHelper {
                                 }
                             }
                         }
+                        if (isCancelled()) return null;
                         newImage[(i*j) + i] = filter.convolute(framePixels, pixelCounter);
                     }
                 }
@@ -70,6 +71,8 @@ public class ImageHelper {
                 manager.setSelectedBitMap(result);
             }
         };
+
+
     }
 
     private class MeanConvolutionFilter implements ConvolutionFilter{

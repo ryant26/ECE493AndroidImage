@@ -16,8 +16,8 @@ public class MedianFilterSettingsActivity extends FilterSettingsActivity {
     }
 
     @Override
-    protected void applyFilter(Bitmap image) {
+    protected void applyFilter(Bitmap image, int filterSize) {
         ImageHelper helper = new ImageHelper((AppManager) getApplication());
-        helper.medianFilter(image);
+        helper.medianFilter(image, filterSize);
     }
 }

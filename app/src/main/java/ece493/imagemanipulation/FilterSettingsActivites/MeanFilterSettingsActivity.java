@@ -16,8 +16,8 @@ public class MeanFilterSettingsActivity extends FilterSettingsActivity{
     }
 
     @Override
-    protected void applyFilter(Bitmap image) {
+    protected void applyFilter(Bitmap image, int numPixels) {
         ImageHelper helper = new ImageHelper((AppManager) getApplication());
-        helper.meanFilter(image);
+        helper.meanFilter(image, numPixels);
     }
 }
