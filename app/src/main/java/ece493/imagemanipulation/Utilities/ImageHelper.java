@@ -89,14 +89,13 @@ public class ImageHelper {
 
         @Override
         public Integer convolute(int[] mask, int numPixels) {
-            int [] sorted = Arrays.copyOfRange(mask, 0, numPixels);
-            Arrays.sort(sorted);
+            Arrays.sort(mask, 0, numPixels);
             float median = 0;
 
-            if (sorted.length % 2 == 0){    //Even
-                median = ((float)sorted[sorted.length/2] / sorted[sorted.length/2 - 1])/2;
+            if (numPixels % 2 == 0){    //Even
+                median = ((float)mask[numPixels/2] / mask[numPixels/2 - 1])/2;
             } else {    //Odd
-                median = (float)sorted[sorted.length/2];
+                median = (float)mask[numPixels/2];
             }
 
             return Math.round(median);
