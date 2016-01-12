@@ -34,10 +34,6 @@ public class AppManager extends Application{
     }
 
     public void setSelectedBitMap(Bitmap selectedBitMap) {
-        if (filterTaskRunning()){
-            filterTask.cancel(true);
-            filterTask = null;
-        }
         this.selectedBitMap = selectedBitMap;
         updateObservers();
     }
@@ -52,6 +48,13 @@ public class AppManager extends Application{
             }
         } else {
             return false;
+        }
+    }
+
+    public void cancelFilterTask(){
+        if (filterTaskRunning()){
+            filterTask.cancel(true);
+            filterTask = null;
         }
     }
 

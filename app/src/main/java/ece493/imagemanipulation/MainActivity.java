@@ -103,8 +103,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     try{
                         ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
                         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+                        if(appManager.filterTaskRunning()){
+                            appManager.cancelFilterTask();
+                        }
                         appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
-                        update();
                     } catch (IOException e){
                         //TODO Show an error to the user
                         Log.e("ImageSelect", "Could not open File!!");
