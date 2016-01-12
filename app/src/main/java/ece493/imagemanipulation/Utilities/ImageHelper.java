@@ -60,13 +60,32 @@ public class ImageHelper {
 
         @Override
         public Integer convolute(int[] mask, int numPixels) {
-            Arrays.sort(mask, 0, numPixels);
+            int [] RChannels = new int[numPixels];
+            int [] GChannels = new int[numPixels];
+            int [] BChannels = new int[numPixels];
+
+            for (int i=0; i < numPixels; i++){
+                RChannels[i] = (mask[i] >> 16) & 0xff;
+                GChannels[i] = (mask[i] >> 8) & 0xff;
+                BChannels[i] = mask[i] & 0xff;
+            }
+
+            int R = Math.round(computeMedian(RChannels));
+            int G = Math.round(computeMedian(GChannels));
+            int B = Math.round(computeMedian(BChannels));
+
+            return 0xff000000 | (R << 16) | (G << 8) | B;
+        }
+        
+        private float computeMedian(int[] unsortedList){
+            int numElements = unsortedList.length;
+            Arrays.sort(unsortedList, 0, numElements);
             float median = 0;
 
-            if (numPixels % 2 == 0){    //Even
-                median = ((float)mask[numPixels/2] / mask[numPixels/2 - 1])/2;
+            if (numElements % 2 == 0){    //Even
+                median = ((float)unsortedList[numElements/2] + unsortedList[numElements/2 - 1])/2;
             } else {    //Odd
-                median = (float)mask[numPixels/2];
+                median = (float)unsortedList[numElements/2];
             }
 
             return Math.round(median);
