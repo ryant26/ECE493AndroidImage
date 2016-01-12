@@ -1,5 +1,6 @@
 package ece493.imagemanipulation;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -132,8 +133,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void showProgressDialog(){
-        filterDialog = DialogHelper.getFilterDialog(this);
-        filterDialog.show();
+        if (!isFinishing()){
+            filterDialog = DialogHelper.getFilterDialog(this);
+            filterDialog.show();
+        }
+
     }
 
     private void hideFilterDialog(){
