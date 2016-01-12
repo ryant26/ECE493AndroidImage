@@ -1,5 +1,6 @@
 package ece493.imagemanipulation;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
+import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.ImageHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private static final int SELECT_IMAGE = 99;
     private AppManager appManager;
     private Menu menu;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +123,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     @Override
     public void update() {
         setImage(appManager.getSelectedBitMap());
-        if (appManager.getSelectedBitMap() != null){
+        if (appManager.filterTaskRunning()){
+            showProgressDialog();
+        } else {
 
         }
     }
@@ -135,6 +140,17 @@ public class MainActivity extends AppCompatActivity implements Observer {
         Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
         selectImageIntent.setType("image/*");
         startActivityForResult(selectImageIntent, SELECT_IMAGE);
+    }
+
+    private void showProgressDialog(){
+        progressDialog = DialogHelper.getProgressDialog(this);
+        progressDialog.show();
+    }
+
+    private void hideProgressDialog(){
+        if (progressDialog != null){
+            progressDialog.dismiss();
+        }
     }
 
     private void startSettingsActivity(Class activity){

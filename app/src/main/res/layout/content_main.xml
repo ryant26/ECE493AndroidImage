@@ -12,6 +12,8 @@
     tools:context="ece493.imagemanipulation.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <!--<include layout="@layout/loading_spinner"/>-->
+
     <ImageView
         android:id="@+id/ImageView"
         android:layout_width="match_parent"
