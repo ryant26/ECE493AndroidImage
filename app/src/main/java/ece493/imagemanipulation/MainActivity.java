@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
+import ece493.imagemanipulation.Utilities.ImageHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
@@ -108,8 +110,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
                         }
                         appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
                     } catch (IOException e){
-                        //TODO Show an error to the user
                         Log.e("ImageSelect", "Could not open File!!");
+                        showFileProblemDialog();
                     }
                 }
         }
@@ -138,5 +140,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void startSettingsActivity(Class activity){
         Intent intent = new Intent(this, activity);
         startActivity(intent);
+    }
+
+    private final void showFileProblemDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle("Could not open file")
+                .setMessage("We could not open that image file. Please try again.")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
