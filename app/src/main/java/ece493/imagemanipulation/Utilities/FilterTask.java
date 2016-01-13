@@ -34,13 +34,14 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
         image.getPixels(pixels, 0, width, 0, 0, width, height);
         int pixelCounter;
+        int framePixelPosition;
 
         for (int j=0; j < height; j++){
             for (int i=0; i < width; i++){
                 pixelCounter = 0;
                 for (int frameJ=j-(filterSize/2); frameJ <= j + (filterSize/2); frameJ++){
                     for (int frameI=i-(filterSize/2); frameI <= i+(filterSize/2); frameI++){
-                        int framePixelPosition = (frameJ*width) + frameI;
+                        framePixelPosition = (frameJ*width) + frameI;
                         if (framePixelPosition >= 0 &&
                                 framePixelPosition < pixels.length &&
                                 frameI >=0 &&

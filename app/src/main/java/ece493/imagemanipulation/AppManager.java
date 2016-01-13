@@ -29,6 +29,7 @@ public class AppManager extends Application{
     }
 
     public void setFilterTask(FilterTask filterTask) {
+        cancelFilterTask();
         this.filterTask = filterTask;
         this.filterTask.execute(selectedBitMap);
         updateObservers();

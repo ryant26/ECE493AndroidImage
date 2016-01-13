@@ -13,19 +13,27 @@ import android.widget.TextView;
 
 import ece493.imagemanipulation.AppManager;
 import ece493.imagemanipulation.R;
+import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.ImageHelper;
+import ece493.imagemanipulation.Utilities.Observer;
 
-public abstract class FilterSettingsActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class FilterSettingsActivity extends AppCompatActivity implements View.OnClickListener, Observer {
 
     private EditText filterSizeEntry;
     private AppManager manager;
+    private DialogHelper dialogHelper;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_settings);
-        manager = (AppManager) getApplication();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Set up new objects and call backs
+        manager = (AppManager) getApplication();
+        manager.addObserver(this);
+        dialogHelper = new DialogHelper(this);
+
 
         //Set up Widget Bindings
         filterSizeEntry = (EditText) findViewById(R.id.filterSizeEntry);
@@ -55,10 +63,19 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
             showInvalidFilterDialog();
         }
         Bitmap selectedImage = manager.getSelectedBitMap();
-        if(filterSize > ImageHelper.getMaxFilterSize(selectedImage)){
+        if(filterSize > ImageHelper.getMaxFilterSize(selectedImage) || filterSize % 2 == 0){
             showInvalidFilterDialog();
         } else {
             applyFilter(manager.getSelectedBitMap(), filterSize);
+        }
+    }
+
+    @Override
+    public void update(){
+        if(manager.filterTaskRunning()){
+            dialogHelper.showProgressDialog();
+        } else {
+            dialogHelper.hideFilterDialog();
         }
     }
 
