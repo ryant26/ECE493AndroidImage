@@ -36,11 +36,16 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
         int pixelCounter;
         int framePixelPosition;
 
+        // Iterate over every pixel in the image
         for (int j=0; j < height; j++){
             for (int i=0; i < width; i++){
+
                 pixelCounter = 0;
+
+                // Iterate over every pixel in the kernel
                 for (int frameJ=j-(filterSize/2); frameJ <= j + (filterSize/2); frameJ++){
                     for (int frameI=i-(filterSize/2); frameI <= i+(filterSize/2); frameI++){
+
                         framePixelPosition = (frameJ*width) + frameI;
                         if (framePixelPosition >= 0 &&
                                 framePixelPosition < pixels.length &&
