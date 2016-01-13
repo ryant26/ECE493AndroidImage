@@ -1,7 +1,5 @@
 package ece493.imagemanipulation;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private static final int SELECT_IMAGE = 99;
     private AppManager appManager;
     private Menu menu;
-    private ProgressDialog filterDialog;
+    private DialogHelper dialogHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        dialogHelper = new DialogHelper(this);
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
     }
@@ -114,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     public void update() {
         setImage(appManager.getSelectedBitMap());
         if(appManager.filterTaskRunning()){
-            showProgressDialog();
+            dialogHelper.showProgressDialog();
         } else {
-            hideFilterDialog();
+            dialogHelper.hideFilterDialog();
         }
     }
 
@@ -130,22 +129,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         Intent selectImageIntent = new Intent(Intent.ACTION_PICK);
         selectImageIntent.setType("image/*");
         startActivityForResult(selectImageIntent, SELECT_IMAGE);
-    }
-
-    private void showProgressDialog(){
-        if (!isFinishing()){
-            filterDialog = DialogHelper.getFilterDialog(this);
-            filterDialog.show();
-        }
-
-    }
-
-    private void hideFilterDialog(){
-        try{
-            filterDialog.dismiss();
-        } catch (Exception e){
-            //We don't care about this
-        }
     }
 
     private void startSettingsActivity(Class activity){
