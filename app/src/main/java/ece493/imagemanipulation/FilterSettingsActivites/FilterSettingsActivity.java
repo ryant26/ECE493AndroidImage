@@ -37,6 +37,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
 
         //Set up Widget Bindings
         filterSizeEntry = (EditText) findViewById(R.id.filterSizeEntry);
+
         TextView title = (TextView) findViewById(R.id.settingsViewTitle);
         title.setText(getSettingsTitle());
 
@@ -57,13 +58,17 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
     @Override
     public final void onClick(View v){
         int filterSize = 0;
+
         try{
             filterSize = Integer.parseInt(filterSizeEntry.getText().toString());
         } catch (NumberFormatException e){
             showInvalidFilterDialog();
         }
+
         Bitmap selectedImage = manager.getSelectedBitMap();
-        if(filterSize > ImageHelper.getMaxFilterSize(selectedImage) || filterSize % 2 == 0){
+        if(filterSize > ImageHelper.getMaxFilterSize(selectedImage)
+                || filterSize % 2 == 0
+                || filterSize < 3){
             showInvalidFilterDialog();
         } else {
             applyFilter(manager.getSelectedBitMap(), filterSize);
