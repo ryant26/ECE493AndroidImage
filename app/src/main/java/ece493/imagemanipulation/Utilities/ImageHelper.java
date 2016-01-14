@@ -32,7 +32,7 @@ public class ImageHelper {
         manager.setFilterTask(new FilterTask(filterSize, filter, manager));
     }
 
-    private class MeanConvolutionFilter implements ConvolutionFilter{
+    private class MeanConvolutionFilter extends ConvolutionFilter{
 
         int R=0, G=0, B=0;
 
@@ -40,9 +40,9 @@ public class ImageHelper {
         public Integer convolute(int[] mask, int numPixels) {
             R=0; G=0; B=0;
             for (int j=0; j < numPixels; j++){
-                R += (mask[j] >> 16) & 0xff;
-                G += (mask[j] >> 8) & 0xff;
-                B += mask[j] & 0xff;
+                R += getRedChannel(mask[j]);
+                G += getGreenChannel(mask[j]);
+                B += getBlueChannel(mask[j]);
             }
 
             //Intentionally using integer division dropping the decimal
@@ -50,13 +50,13 @@ public class ImageHelper {
             G = G/numPixels;
             B = B/numPixels;
 
-            return 0xff000000 | (R << 16) | (G << 8) | B;
+            return packChannels(R, G, B);
 
         }
     }
 
 
-    private class MedianConvolutionFiler implements  ConvolutionFilter{
+    private class MedianConvolutionFiler extends  ConvolutionFilter{
 
         int [] RChannels = new int[1];
         int [] GChannels = new int[1];
@@ -75,21 +75,21 @@ public class ImageHelper {
 
 
             for (int i=0; i < numPixels; i++){
-                RChannels[i] = (mask[i] >> 16) & 0xff;
-                GChannels[i] = (mask[i] >> 8) & 0xff;
-                BChannels[i] = mask[i] & 0xff;
+                RChannels[i] = getRedChannel(mask[i]);
+                GChannels[i] = getGreenChannel(mask[i]);
+                BChannels[i] = getBlueChannel(mask[i]);
             }
 
             R = computeMedian(RChannels, numPixels);
             G = computeMedian(GChannels, numPixels);
             B = computeMedian(BChannels, numPixels);
 
-            return 0xff000000 | (R << 16) | (G << 8) | B;
+            return packChannels(R, G, B);
         }
         
         private int computeMedian(int[] unsortedList, int numElements){
             Arrays.sort(unsortedList, 0, numElements);
-            int median = 0;
+            int median;
 
             if (numElements % 2 == 0){    //Even
                 median = (unsortedList[numElements/2] + unsortedList[numElements/2 - 1])/2;
