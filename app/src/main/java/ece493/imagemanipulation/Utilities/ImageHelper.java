@@ -34,18 +34,24 @@ public class ImageHelper {
 
     private class MeanConvolutionFilter extends ConvolutionFilter{
 
+        // Initialize channels for performance
         int R=0, G=0, B=0;
 
         @Override
         public Integer convolute(int[] mask, int numPixels) {
+
+            // Reset channels for consecutive calls
             R=0; G=0; B=0;
+
+            // Iterate over kernel and sum values for each channel
             for (int j=0; j < numPixels; j++){
                 R += getRedChannel(mask[j]);
                 G += getGreenChannel(mask[j]);
                 B += getBlueChannel(mask[j]);
             }
 
-            //Intentionally using integer division dropping the decimal
+            // Calculate average for each channel
+            // Intentionally using integer division dropping the decimal
             R = R/numPixels;
             G = G/numPixels;
             B = B/numPixels;
@@ -58,22 +64,25 @@ public class ImageHelper {
 
     private class MedianConvolutionFiler extends  ConvolutionFilter{
 
+        //Initialize arrays for performance between consecutive calls
         int [] RChannels = new int[1];
         int [] GChannels = new int[1];
         int [] BChannels = new int[1];
 
+        // Initialize channels for performance
         int R, G, B;
 
         @Override
         public Integer convolute(int[] mask, int numPixels) {
 
+            // Only reinitialize arrays if they are not large enough to hold new kernel
             if (numPixels > RChannels.length){
                 RChannels = new int[numPixels];
                 GChannels = new int[numPixels];
                 BChannels = new int[numPixels];
             }
 
-
+            // Iterate over kernel
             for (int i=0; i < numPixels; i++){
                 RChannels[i] = getRedChannel(mask[i]);
                 GChannels[i] = getGreenChannel(mask[i]);
@@ -89,6 +98,7 @@ public class ImageHelper {
         
         private int computeMedian(int[] unsortedList, int numElements){
             Arrays.sort(unsortedList, 0, numElements);
+            
             int median;
 
             if (numElements % 2 == 0){    //Even
