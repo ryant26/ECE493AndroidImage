@@ -2,7 +2,6 @@ package ece493.imagemanipulation;
 
 import android.app.Application;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
