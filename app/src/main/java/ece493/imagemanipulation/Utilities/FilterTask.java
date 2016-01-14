@@ -24,15 +24,20 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(Bitmap... params) {
+        // Set up frequently used variables
         Bitmap image = params[0];
         int width = image.getWidth();
         int height = image.getHeight();
 
+        // Create arrays for old image, new image and kernel
         int [] pixels = new int[width * height];
         int [] framePixels = new int[filterSize * filterSize];
         int [] newImage = new int[pixels.length];
 
+        // Get the pixel array
         image.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        // Create external counter variables for performance
         int pixelCounter;
         int framePixelPosition;
 
@@ -47,20 +52,25 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
                     for (int frameI=i-(filterSize/2); frameI <= i+(filterSize/2); frameI++){
 
                         framePixelPosition = (frameJ*width) + frameI;
+
+                        // Handle edges of image
                         if (framePixelPosition >= 0 &&
                                 framePixelPosition < pixels.length &&
                                 frameI >=0 &&
                                 frameJ >= 0){
+
                             framePixels[pixelCounter] = pixels[framePixelPosition];
                             pixelCounter++;
                         }
                     }
                 }
+                // Kill the loop if we are cancelled
                 if (isCancelled()) return null;
+
+                //Apply the convolution with the constructed kernel
                 newImage[(j * width) + i] = filter.convolute(framePixels, pixelCounter);
             }
         }
-
         return Bitmap.createBitmap(newImage, image.getWidth(), image.getHeight(), image.getConfig());
     }
 

@@ -71,7 +71,7 @@ public abstract class FilterSettingsActivity extends AppCompatActivity implement
                 || filterSize < 3){
             showInvalidFilterDialog();
         } else {
-            applyFilter(manager.getSelectedBitMap(), filterSize);
+            applyFilter(selectedImage, filterSize);
         }
     }
 
