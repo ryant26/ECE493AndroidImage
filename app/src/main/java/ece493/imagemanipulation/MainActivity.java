@@ -33,8 +33,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Connect Widgets
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Initialize helpers and manager
         dialogHelper = new DialogHelper(this);
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
@@ -52,10 +56,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         MenuItem meanFilter = menu.findItem(R.id.apply_mean_filter);
         MenuItem medianFilter = menu.findItem(R.id.apply_median_filter);
 
+        // Only enable apply filter activities if an image is selected
         if (appManager.getSelectedBitMap() != null){
             meanFilter.setEnabled(true);
             medianFilter.setEnabled(true);
         }
+
         return true;
     }
 
@@ -97,9 +103,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     try{
                         ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
                         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+
                         if(appManager.filterTaskRunning()){
                             appManager.cancelFilterTask();
                         }
+
                         appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
                     } catch (IOException e){
                         Log.e("ImageSelect", "Could not open File!!");

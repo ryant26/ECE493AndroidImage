@@ -98,7 +98,7 @@ public class ImageHelper {
         
         private int computeMedian(int[] unsortedList, int numElements){
             Arrays.sort(unsortedList, 0, numElements);
-            
+
             int median;
 
             if (numElements % 2 == 0){    //Even
