@@ -99,21 +99,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         switch (requestCode){
             case SELECT_IMAGE:
                 if (resultCode == RESULT_OK){
-                    Uri selectedImageUri = returnedImageIntent.getData();
-                    try{
-                        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
-                        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-
-                        if(appManager.filterTaskRunning()){
-                            appManager.cancelFilterTask();
-                        }
-
-                        appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
-                    } catch (IOException e){
-                        Log.e("ImageSelect", "Could not open File!!");
-                        showFileProblemDialog();
-                    }
+                   receiveImage(returnedImageIntent);
                 }
+                break;
         }
     }
 
@@ -142,6 +130,23 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void startSettingsActivity(Class activity){
         Intent intent = new Intent(this, activity);
         startActivity(intent);
+    }
+
+    private void receiveImage(Intent returnedImageIntent){
+        Uri selectedImageUri = returnedImageIntent.getData();
+        try{
+            ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(selectedImageUri, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+
+            if(appManager.filterTaskRunning()){
+                appManager.cancelFilterTask();
+            }
+
+            appManager.setSelectedBitMap(BitmapFactory.decodeFileDescriptor(fileDescriptor));
+        } catch (IOException e){
+            Log.e("ImageSelect", "Could not open File!!");
+            showFileProblemDialog();
+        }
     }
 
     private final void showFileProblemDialog(){
