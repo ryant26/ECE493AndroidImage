@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,13 +22,17 @@ import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivi
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
+import ece493.imagemanipulation.Utilities.PhotoHelper;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
     private static final int SELECT_IMAGE = 99;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private AppManager appManager;
     private Menu menu;
     private DialogHelper dialogHelper;
+    private PhotoHelper photoHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +45,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         // Initialize helpers and manager
         dialogHelper = new DialogHelper(this);
+        photoHelper = new PhotoHelper(this);
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
+
     }
 
     @Override
@@ -73,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         int id = item.getItemId();
 
         switch (id){
+            case R.id.take_photo:
+                photoHelper.takePhoto();
+                return true;
             case R.id.import_image:
                 selectImage();
                 return true;
@@ -102,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
                    receiveImage(returnedImageIntent);
                 }
                 break;
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK){
+                    recievePhoto();
+                }
         }
     }
 
@@ -130,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private void startSettingsActivity(Class activity){
         Intent intent = new Intent(this, activity);
         startActivity(intent);
+    }
+
+    private void recievePhoto(){
+        appManager.setSelectedBitMap(photoHelper.getImage());
     }
 
     private void receiveImage(Intent returnedImageIntent){

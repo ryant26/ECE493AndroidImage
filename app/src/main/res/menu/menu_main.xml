@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ece493.imagemanipulation.MainActivity">
     <item
+        android:id="@+id/take_photo"
+        android:orderInCategory="100"
+        android:title="@string/take_photo"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/import_image"
         android:orderInCategory="100"
         android:title="@string/import_image"

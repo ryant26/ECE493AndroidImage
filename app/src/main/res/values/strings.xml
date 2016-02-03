@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ImageManipulation</string>
     <string name="import_image">Import Image</string>
+    <string name="take_photo">Take Photo</string>
     <string name="apply_mean_filter">Apply Mean Filter</string>
     <string name="apply_median_filter">Apply Median Filter</string>
     <string name="convolution_mask_size">Convolution Mask Size</string>
