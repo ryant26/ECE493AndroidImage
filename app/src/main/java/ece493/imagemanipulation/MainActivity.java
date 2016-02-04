@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
+import ece493.imagemanipulation.GestureListeners.FishEyeListener;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 import ece493.imagemanipulation.Utilities.PhotoHelper;
@@ -42,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         // Connect Widgets
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ImageView iView = (ImageView) findViewById(R.id.ImageView);
+        iView.setOnTouchListener(new FishEyeListener());
 
         // Initialize helpers and manager
         dialogHelper = new DialogHelper(this);

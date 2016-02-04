@@ -1,5 +1,6 @@
 package ece493.imagemanipulation.GestureListeners;
 
+import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -7,7 +8,6 @@ import android.view.View;
  * Created by ryan on 03/02/16.
  */
 public abstract class CustomListener implements View.OnTouchListener{
-    private int x1d, y1d, x1u, y1u;
 
     @Override
     public final boolean onTouch(View v, MotionEvent e){
@@ -15,20 +15,33 @@ public abstract class CustomListener implements View.OnTouchListener{
 
         switch (action){
             case(MotionEvent.ACTION_DOWN):
-                actionDown((int)e.getX(), (int)e.getY());
+                actionDown(e);
                 break;
             case(MotionEvent.ACTION_POINTER_DOWN):
-                actionPointerDown((int) e.getX(), (int) e.getY());
+                actionPointerDown(e);
                 break;
             case(MotionEvent.ACTION_POINTER_UP):
-                actionPointerUp((int) e.getX(), (int) e.getY());
+                actionPointerUp(e);
+                break;
+            case(MotionEvent.ACTION_UP):
+                actionUp(e);
                 break;
         }
 
         return true;
     }
 
-    public abstract void actionDown(int x, int y);
-    public abstract void actionPointerDown(int x, int y);
-    public abstract void actionPointerUp(int x, int y);
+    protected int getTouchX(MotionEvent e){
+        return (int) MotionEventCompat.getX(e, e.getActionIndex());
+    }
+
+    protected int getTouchY(MotionEvent e){
+        return (int) MotionEventCompat.getY(e, e.getActionIndex());
+    }
+
+    public abstract void actionDown(MotionEvent e);
+    public abstract void actionPointerDown(MotionEvent e);
+    public abstract void actionPointerUp(MotionEvent e);
+    public abstract void actionUp(MotionEvent e);
+    protected abstract void checkForGestureExecution();
 }
