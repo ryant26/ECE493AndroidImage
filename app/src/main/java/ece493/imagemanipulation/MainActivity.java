@@ -21,6 +21,8 @@ import java.io.IOException;
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
 import ece493.imagemanipulation.GestureListeners.FishEyeListener;
+import ece493.imagemanipulation.GestureListeners.GestureAggregator;
+import ece493.imagemanipulation.GestureListeners.WarpListener;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 import ece493.imagemanipulation.Utilities.PhotoHelper;
@@ -39,13 +41,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GestureAggregator gestureAggregator = new GestureAggregator();
+        gestureAggregator.addListener(new FishEyeListener());
+        gestureAggregator.addListener(new WarpListener());
 
         // Connect Widgets
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         ImageView iView = (ImageView) findViewById(R.id.ImageView);
-        iView.setOnTouchListener(new FishEyeListener());
+        iView.setOnTouchListener(gestureAggregator);
 
         // Initialize helpers and manager
         dialogHelper = new DialogHelper(this);

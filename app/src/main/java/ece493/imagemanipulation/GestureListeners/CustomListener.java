@@ -43,5 +43,4 @@ public abstract class CustomListener implements View.OnTouchListener{
     public abstract void actionPointerDown(MotionEvent e);
     public abstract void actionPointerUp(MotionEvent e);
     public abstract void actionUp(MotionEvent e);
-    protected abstract void checkForGestureExecution();
 }
