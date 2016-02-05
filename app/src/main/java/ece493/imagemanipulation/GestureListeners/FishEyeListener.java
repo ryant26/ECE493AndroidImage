@@ -1,8 +1,6 @@
 package ece493.imagemanipulation.GestureListeners;
 
-import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
-import android.view.MotionEvent;
 
 /**
  * Created by ryan on 03/02/16.

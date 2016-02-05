@@ -10,6 +10,7 @@ import android.view.View;
  */
 public abstract class TwoFingerGesture implements View.OnTouchListener {
     protected int x1d, y1d, x2d, y2d, x1u, y1u, x2u, y2u;
+    private boolean twoTouches = false;
 
     @Override
     public final boolean onTouch(View v, MotionEvent e){
@@ -48,6 +49,7 @@ public abstract class TwoFingerGesture implements View.OnTouchListener {
 
     public void actionPointerDown(MotionEvent e) {
         if (e.getPointerCount() == 2){
+            twoTouches = true;
             x2d = getTouchX(e);
             y2d = getTouchY(e);
         } else {
@@ -68,15 +70,12 @@ public abstract class TwoFingerGesture implements View.OnTouchListener {
     }
 
     protected boolean twoTouches(){
-        if (x1d > 0 && x2d > 0 && x1u > 0 && x2u > 0
-                && y1d > 0 && y2d > 0 && y1u > 0 && y2u > 0){
-            return true;
-        }
-        return false;
+       return twoTouches;
     }
 
     protected void resetTouchPositions(){
         x1d = x2d = x1u = x2u = y1d = y2d = y1u = y2u = 0;
+        twoTouches = false;
     }
 
     protected abstract void checkForGestureExecution();
