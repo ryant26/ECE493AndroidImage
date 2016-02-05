@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
-import android.provider.MediaStore;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +24,7 @@ import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActi
 import ece493.imagemanipulation.GestureListeners.BulgeListener;
 import ece493.imagemanipulation.GestureListeners.FishEyeListener;
 import ece493.imagemanipulation.GestureListeners.GestureAggregator;
-import ece493.imagemanipulation.GestureListeners.WarpListener;
+import ece493.imagemanipulation.GestureListeners.SwirlListener;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 import ece493.imagemanipulation.Utilities.PhotoHelper;
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         // Setup Gesture listeners
         GestureAggregator gestureAggregator = new GestureAggregator();
         gestureAggregator.addListener(new FishEyeListener());
-        gestureAggregator.addListener(new WarpListener());
+        gestureAggregator.addListener(new SwirlListener());
         gestureAggregator.addListener(new BulgeListener());
 
 

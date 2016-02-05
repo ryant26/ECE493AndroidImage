@@ -66,7 +66,12 @@ public abstract class TwoFingerGesture implements View.OnTouchListener {
     public void actionUp(MotionEvent e) {
         x2u = getTouchX(e);
         y2u = getTouchY(e);
-        checkForGestureExecution();
+        if (twoTouches()){
+            checkForGestureExecution();
+        } else {
+            resetTouchPositions();
+        }
+
     }
 
     protected boolean twoTouches(){
