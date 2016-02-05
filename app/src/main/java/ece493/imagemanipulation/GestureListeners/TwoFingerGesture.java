@@ -1,21 +1,51 @@
 package ece493.imagemanipulation.GestureListeners;
 
+import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 
 /**
  * Created by ryan on 04/02/16.
  */
-public abstract class TwoFingerGesture extends CustomListener {
+public abstract class TwoFingerGesture implements View.OnTouchListener {
     protected int x1d, y1d, x2d, y2d, x1u, y1u, x2u, y2u;
 
     @Override
+    public final boolean onTouch(View v, MotionEvent e){
+        int action = e.getActionMasked();
+
+        switch (action){
+            case(MotionEvent.ACTION_DOWN):
+                actionDown(e);
+                break;
+            case(MotionEvent.ACTION_POINTER_DOWN):
+                actionPointerDown(e);
+                break;
+            case(MotionEvent.ACTION_POINTER_UP):
+                actionPointerUp(e);
+                break;
+            case(MotionEvent.ACTION_UP):
+                actionUp(e);
+                break;
+        }
+
+        return true;
+    }
+
+    protected int getTouchX(MotionEvent e){
+        return (int) MotionEventCompat.getX(e, e.getActionIndex());
+    }
+
+    protected int getTouchY(MotionEvent e){
+        return (int) MotionEventCompat.getY(e, e.getActionIndex());
+    }
+
     public void actionDown(MotionEvent e) {
         x1d = getTouchX(e);
         y1d = getTouchY(e);
     }
 
-    @Override
     public void actionPointerDown(MotionEvent e) {
         if (e.getPointerCount() == 2){
             x2d = getTouchX(e);
@@ -26,13 +56,11 @@ public abstract class TwoFingerGesture extends CustomListener {
 
     }
 
-    @Override
     public void actionPointerUp(MotionEvent e) {
         x1u = getTouchX(e);
         y1u = getTouchY(e);
     }
 
-    @Override
     public void actionUp(MotionEvent e) {
         x2u = getTouchX(e);
         y2u = getTouchY(e);

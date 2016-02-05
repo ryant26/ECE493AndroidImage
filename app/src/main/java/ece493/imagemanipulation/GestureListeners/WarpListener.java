@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by ryan on 03/02/16.
  */
 public class WarpListener extends TwoFingerGesture{
-    private static final int Y_THRESHOLD = 50;
+    private static final int Y_THRESHOLD = 100;
 
     @Override
     protected void checkForGestureExecution() {

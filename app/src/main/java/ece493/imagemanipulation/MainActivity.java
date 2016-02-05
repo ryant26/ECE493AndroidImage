@@ -7,12 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import java.io.FileDescriptor;
@@ -20,6 +22,7 @@ import java.io.IOException;
 
 import ece493.imagemanipulation.FilterSettingsActivites.MeanFilterSettingsActivity;
 import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActivity;
+import ece493.imagemanipulation.GestureListeners.BulgeListener;
 import ece493.imagemanipulation.GestureListeners.FishEyeListener;
 import ece493.imagemanipulation.GestureListeners.GestureAggregator;
 import ece493.imagemanipulation.GestureListeners.WarpListener;
@@ -36,14 +39,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private Menu menu;
     private DialogHelper dialogHelper;
     private PhotoHelper photoHelper;
+    private GestureDetectorCompat gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Setup Gesture listeners
         GestureAggregator gestureAggregator = new GestureAggregator();
         gestureAggregator.addListener(new FishEyeListener());
         gestureAggregator.addListener(new WarpListener());
+        gestureAggregator.addListener(new BulgeListener());
+
 
         // Connect Widgets
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -136,6 +144,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         } else {
             dialogHelper.hideFilterDialog();
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent e){
+        gestureDetector.onTouchEvent(e);
+        return super.onTouchEvent(e);
     }
 
     private void setImage(Bitmap image) {

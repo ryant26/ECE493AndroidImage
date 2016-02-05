@@ -1,6 +1,7 @@
 package ece493.imagemanipulation.GestureListeners;
 
 import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,43 +9,23 @@ import java.util.List;
 /**
  * Created by ryan on 04/02/16.
  */
-public class GestureAggregator extends CustomListener {
-    private List<CustomListener> listeners = new ArrayList<>();
+public class GestureAggregator implements View.OnTouchListener {
+    private List<View.OnTouchListener> listeners = new ArrayList<>();
 
-    public void addListener(CustomListener listener) {
+    public void addListener(View.OnTouchListener listener) {
         listeners.add(listener);
     }
 
-    public void removeListener(CustomListener listener) {
+    public void removeListener(View.OnTouchListener listener) {
         listeners.remove(listener);
     }
 
-    @Override
-    public void actionDown(final MotionEvent e) {
-        for(CustomListener listener : listeners){
-            listener.actionDown(e);
-        }
-    }
 
     @Override
-    public void actionPointerDown(MotionEvent e) {
-        for(CustomListener listener : listeners){
-            listener.actionPointerDown(e);
+    public boolean onTouch(View v, MotionEvent event) {
+        for (View.OnTouchListener listener: listeners) {
+            listener.onTouch(v,event);
         }
+        return true;
     }
-
-    @Override
-    public void actionPointerUp(MotionEvent e) {
-        for(CustomListener listener : listeners){
-            listener.actionPointerUp(e);
-        }
-    }
-
-    @Override
-    public void actionUp(MotionEvent e) {
-        for(CustomListener listener : listeners){
-            listener.actionUp(e);
-        }
-    }
-
 }
