@@ -1,36 +1,43 @@
-// This code originates from supercomputingblog.com
-// You may use this code for any purpose as long as
-// credit is properly given to supercomputingblog.com
-
-
+#pragma version(1)
+#pragma rs java_package_name(ece493.imagemanipulation.NonlinearTransoforms)
 #define C_PI 3.141592653589793238462643383279502884197169399375
-void Swirl (Bitmap * pBitmap, double factor) {
+
+const uchar4* input;
+uchar4* output;
+
+int32_t width;
+int32_t height;
+
+//a convenience method to clamp getting pixels into the image
+static uchar4 getPixelAt(int x, int y) {
+	if(y>=height) y = height-1;
+	if(y<0) y = 0;
+	if(x>=width) x = width-1;
+	if(x<0) x = 0;
+	return input[y*width + x];
+}
+
+//take care of setting x,y on the 1d-array representing the bitmap
+void setPixelAt(int x, int y, uchar4 pixel) {
+	output[y*width + x] = pixel;
+}
+
+void Swirl (double factor) {
 
     // This function effectively swirls an image
-    int width = pBitmap->GetWidth();
-    int height = pBitmap->GetHeight();
     double cX = (double)width/2.0f;
     double cY = (double)height/2.0f;
 
-    BitmapData bitmapData;
-    pBitmap->LockBits(&Rect(0,0,pBitmap->GetWidth(), pBitmap->GetHeight()),
-     ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
-
-    unsigned int *pRawBitmapOrig = (unsigned int*)bitmapData.Scan0; // for easy access and indexing
-    unsigned int *pBitmapCopy = new unsigned int[bitmapData.Stride*height/4];
-    memcpy(pBitmapCopy, pRawBitmapOrig, (bitmapData.Stride*height/4) * sizeof(unsigned int));
-    int nPixels = height*bitmapData.Stride/4;
-
     #pragma omp parallel for
     for (int i=0; i < height; i++) {
-        double relY = cY-i;
+        float relY = cY-i;
         for (int j=0; j < width; j++) {
-            double relX = j-cX;
+            float relX = j-cX;
             // relX and relY are points in our UV space
             // Calculate the angle our points are relative to UV origin. Everything is in radians.
-            double originalAngle;
+            float originalAngle;
             if (relX != 0) {
-                originalAngle = atan(abs(relY)/abs(relX));
+                originalAngle = atan(fabs(relY)/fabs(relX));
                 if ( relX > 0 && relY < 0) originalAngle = 2.0f*C_PI - originalAngle;
                 else if (relX <= 0 && relY >=0) originalAngle = C_PI-originalAngle;
                 else if (relX <=0 && relY <0) originalAngle += C_PI;
@@ -42,11 +49,11 @@ void Swirl (Bitmap * pBitmap, double factor) {
             }
 
             // Calculate the distance from the center of the UV using pythagorean distance
-            double radius = sqrt(relX*relX + relY*relY);
+            float radius = sqrt(relX*relX + relY*relY);
 
             // Use any equation we want to determine how much to rotate image by
             //double newAngle = originalAngle + factor*radius; // a progressive twist
-            double newAngle = originalAngle + 1/(factor*radius+(4.0f/C_PI));
+            float newAngle = originalAngle + 1/(factor*radius+(4.0f/C_PI));
 
             // Transform source UV coordinates back into bitmap coordinates
             int srcX = (int)(floor(radius * cos(newAngle)+0.5f));
@@ -62,10 +69,9 @@ void Swirl (Bitmap * pBitmap, double factor) {
             else if (srcY >= height) srcY = height-1;
 
             // Set the pixel color
-            pRawBitmapOrig[i*bitmapData.Stride/4 + j] =
-            pBitmapCopy[srcY*bitmapData.Stride/4 + srcX];
+            // pRawBitmapOrig[i*bitmapData.Stride/4 + j] =
+            // pBitmapCopy[srcY*bitmapData.Stride/4 + srcX];
+            setPixelAt(j, i, getPixelAt(srcX, srcY));
         }
     }
-    delete[] pBitmapCopy;
-    pBitmap->UnlockBits(&bitmapData);
 }
