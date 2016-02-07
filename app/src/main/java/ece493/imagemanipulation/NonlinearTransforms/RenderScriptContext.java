@@ -16,8 +16,8 @@ public abstract class RenderScriptContext implements GestureInvokedListener{
     private AppManager manager;
     private Activity context;
 
-    protected Allocation tInAllocation;
-    protected Allocation tOutAllocation;
+    protected Allocation inAllocation;
+    protected Allocation outAllocation;
     protected RenderScript tRS;
 
     public RenderScriptContext(AppManager manager, Activity context){
@@ -28,19 +28,27 @@ public abstract class RenderScriptContext implements GestureInvokedListener{
 
     public void invokeTransform(){
         tRS = RenderScript.create(context);
-        tInAllocation = Allocation.createCubemapFromBitmap(tRS, manager.getSelectedBitMap(),
+        inAllocation = Allocation.createCubemapFromBitmap(tRS, manager.getSelectedBitMap(),
                 Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
 
-        tOutAllocation = Allocation.createTyped(tRS, tInAllocation.getType());
+        outAllocation = Allocation.createTyped(tRS, inAllocation.getType());
         invokeScript();
-        tOutAllocation.copyTo(manager.getSelectedBitMap());
+        outAllocation.copyTo(manager.getSelectedBitMap());
         manager.updateObservers();
     }
 
-    protected abstract ScriptC invokeScript();
+    protected abstract void invokeScript();
 
     protected Resources getResources(){
         return context.getResources();
+    }
+
+    protected int getBitmapWidth(){
+        return manager.getSelectedBitMap().getWidth();
+    }
+
+    protected int getBitmapHeight(){
+        return manager.getSelectedBitMap().getHeight();
     }
 
     @Override
