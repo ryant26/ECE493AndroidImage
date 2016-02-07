@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptC;
+import android.util.Log;
 
 import ece493.imagemanipulation.AppManager;
 import ece493.imagemanipulation.GestureListeners.GestureInvokedListener;
@@ -35,6 +36,7 @@ public abstract class RenderScriptContext implements GestureInvokedListener{
         outAllocation = Allocation.createTyped(tRS, inAllocation.getType());
         invokeScript();
         outAllocation.copyTo(manager.getSelectedBitMap());
+        Log.d("DEBUG", "Script finished running");
         manager.updateObservers();
     }
 

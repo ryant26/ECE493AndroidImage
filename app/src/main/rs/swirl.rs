@@ -2,8 +2,8 @@
 #pragma rs java_package_name(ece493.imagemanipulation.NonlinearTransoforms)
 #define C_PI 3.141592653589793238462643383279502884197169399375
 
-const uchar4* input;
-uchar4* output;
+rs_allocation input;
+rs_allocation output;
 
 int32_t width;
 int32_t height;
@@ -14,12 +14,12 @@ static uchar4 getPixelAt(int x, int y) {
 	if(y<0) y = 0;
 	if(x>=width) x = width-1;
 	if(x<0) x = 0;
-	return input[y*width + x];
+	return rsGetElementAt_uchar4(input, x,y);
 }
 
 //take care of setting x,y on the 1d-array representing the bitmap
 void setPixelAt(int x, int y, uchar4 pixel) {
-	output[y*width + x] = pixel;
+	rsSetElementAt_uchar4(output, pixel, x, y);
 }
 
 void Swirl (double factor) {
@@ -69,8 +69,6 @@ void Swirl (double factor) {
             else if (srcY >= height) srcY = height-1;
 
             // Set the pixel color
-            // pRawBitmapOrig[i*bitmapData.Stride/4 + j] =
-            // pBitmapCopy[srcY*bitmapData.Stride/4 + srcX];
             setPixelAt(j, i, getPixelAt(srcX, srcY));
         }
     }

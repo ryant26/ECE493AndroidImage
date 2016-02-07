@@ -20,8 +20,8 @@ public class Swirl extends RenderScriptContext {
         ScriptC_swirl swirlScript = new ScriptC_swirl(tRS);
         swirlScript.set_height(getBitmapHeight());
         swirlScript.set_width(getBitmapWidth());
-        swirlScript.bind_input(inAllocation);
-        swirlScript.bind_output(outAllocation);
+        swirlScript.set_input(inAllocation);
+        swirlScript.set_output(outAllocation);
         swirlScript.invoke_Swirl(0.1f);
     }
 }
