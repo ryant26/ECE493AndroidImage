@@ -5,12 +5,20 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
+
 /**
  * Created by ryan on 04/02/16.
  */
 public abstract class TwoFingerGesture implements View.OnTouchListener {
     protected int x1d, y1d, x2d, y2d, x1u, y1u, x2u, y2u;
     private boolean twoTouches = false;
+    protected RenderScriptContext renderScriptContext;
+
+    public TwoFingerGesture(RenderScriptContext context){
+        renderScriptContext = context;
+    }
+
 
     @Override
     public final boolean onTouch(View v, MotionEvent e){

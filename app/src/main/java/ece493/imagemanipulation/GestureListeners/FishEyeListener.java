@@ -2,10 +2,16 @@ package ece493.imagemanipulation.GestureListeners;
 
 import android.util.Log;
 
+import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
+
 /**
  * Created by ryan on 03/02/16.
  */
 public class FishEyeListener extends TwoFingerGesture {
+
+    public FishEyeListener(RenderScriptContext context) {
+        super(context);
+    }
 
     @Override
     protected void checkForGestureExecution() {

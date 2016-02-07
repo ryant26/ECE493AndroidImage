@@ -25,6 +25,7 @@ import ece493.imagemanipulation.GestureListeners.BulgeListener;
 import ece493.imagemanipulation.GestureListeners.FishEyeListener;
 import ece493.imagemanipulation.GestureListeners.GestureAggregator;
 import ece493.imagemanipulation.GestureListeners.SwirlListener;
+import ece493.imagemanipulation.NonlinearTransforms.Swirl;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
 import ece493.imagemanipulation.Utilities.PhotoHelper;
@@ -45,11 +46,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Setup Gesture listeners
         GestureAggregator gestureAggregator = new GestureAggregator();
-        gestureAggregator.addListener(new FishEyeListener());
-        gestureAggregator.addListener(new SwirlListener());
-        gestureAggregator.addListener(new BulgeListener());
 
 
         // Connect Widgets
@@ -64,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         photoHelper = new PhotoHelper(this);
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
+
+        // Setup Gesture listeners
+        gestureAggregator.addListener(new FishEyeListener(null));
+        gestureAggregator.addListener(new SwirlListener(new Swirl(appManager, this)));
+        gestureAggregator.addListener(new BulgeListener(null));
 
     }
 

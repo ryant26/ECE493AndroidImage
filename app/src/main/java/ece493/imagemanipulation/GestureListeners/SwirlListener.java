@@ -2,12 +2,18 @@ package ece493.imagemanipulation.GestureListeners;
 
 import android.util.Log;
 
+import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
+
 /**
  * Created by ryan on 03/02/16.
  */
 public class SwirlListener extends TwoFingerGesture{
     private static final int X_THRESHOLD = 100;
     private static final int Y_THRESHOLD = 100;
+
+    public SwirlListener(RenderScriptContext context) {
+        super(context);
+    }
 
 
     @Override
@@ -22,6 +28,7 @@ public class SwirlListener extends TwoFingerGesture{
             if (Math.abs(xDifferenceDown - xDifferenceUp) < X_THRESHOLD){
                 //Gestgure rcognized!
                 Log.d("GESTURE", "Warp Gesture detected!!");
+                renderScriptContext.invokeTransform();
             }
         }
     }

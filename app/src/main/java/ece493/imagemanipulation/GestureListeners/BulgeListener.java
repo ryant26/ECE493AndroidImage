@@ -5,6 +5,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
+
 /**
  * Created by ryan on 03/02/16.
  */
@@ -12,6 +14,11 @@ public class BulgeListener extends GestureDetector.SimpleOnGestureListener imple
 
     @SuppressWarnings("deprecation")
     GestureDetector detector = new GestureDetector(this);
+    RenderScriptContext renderScriptContext;
+
+    public BulgeListener(RenderScriptContext context){
+        renderScriptContext = context;
+    }
 
     @Override
     public void onLongPress(MotionEvent e){
