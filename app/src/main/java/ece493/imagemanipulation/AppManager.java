@@ -54,7 +54,7 @@ public class AppManager extends Application{
         }
     }
 
-    private void updateObservers(){
+    public void updateObservers(){
         for(Observer ob : observers){
             ob.update();
         }
