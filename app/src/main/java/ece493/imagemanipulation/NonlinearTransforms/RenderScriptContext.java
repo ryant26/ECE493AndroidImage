@@ -28,7 +28,8 @@ public abstract class RenderScriptContext implements GestureInvokedListener{
 
     public void invokeTransform(){
         tRS = RenderScript.create(context);
-        inAllocation = Allocation.createCubemapFromBitmap(tRS, manager.getSelectedBitMap(),
+
+        inAllocation = Allocation.createFromBitmap(tRS, manager.getSelectedBitMap(),
                 Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
 
         outAllocation = Allocation.createTyped(tRS, inAllocation.getType());
