@@ -9,12 +9,12 @@ import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
  */
 public class FishEyeListener extends TwoFingerGesture {
 
-    public FishEyeListener(RenderScriptContext context) {
-        super(context);
+    public FishEyeListener(GestureInvokedListener listener) {
+        super(listener);
     }
 
     @Override
-    protected void checkForGestureExecution() {
+    protected boolean gestureIsInvoked() {
         int xThreshold = Math.abs(x1d - x2d);
         int yThreshold = 200;
 
@@ -26,8 +26,9 @@ public class FishEyeListener extends TwoFingerGesture {
             if(y1u > y1d + yThreshold && y2u > y2d + yThreshold){
                 // The gesture is detected
                 Log.d("GESTURE", "Fish Eye gesture detected!!");
+                return true;
             }
         }
-        resetTouchPositions();
+        return false;
     }
 }

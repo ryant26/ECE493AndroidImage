@@ -24,6 +24,7 @@ import ece493.imagemanipulation.FilterSettingsActivites.MedianFilterSettingsActi
 import ece493.imagemanipulation.GestureListeners.BulgeListener;
 import ece493.imagemanipulation.GestureListeners.FishEyeListener;
 import ece493.imagemanipulation.GestureListeners.GestureAggregator;
+import ece493.imagemanipulation.GestureListeners.GestureInvokedListener;
 import ece493.imagemanipulation.GestureListeners.SwirlListener;
 import ece493.imagemanipulation.NonlinearTransforms.Swirl;
 import ece493.imagemanipulation.Utilities.DialogHelper;
@@ -39,15 +40,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private Menu menu;
     private DialogHelper dialogHelper;
     private PhotoHelper photoHelper;
-    private GestureDetectorCompat gestureDetector;
+    private GestureAggregator gestureAggregator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        GestureAggregator gestureAggregator = new GestureAggregator();
-
+        // Setup Gesture listeners
+        gestureAggregator = new GestureAggregator();
+        setupGestgures();
 
         // Connect Widgets
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -62,10 +64,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
 
-        // Setup Gesture listeners
-        gestureAggregator.addListener(new FishEyeListener(null));
-        gestureAggregator.addListener(new SwirlListener(new Swirl(appManager, this)));
-        gestureAggregator.addListener(new BulgeListener(null));
+
 
     }
 
@@ -147,12 +146,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent e){
-        gestureDetector.onTouchEvent(e);
-        return super.onTouchEvent(e);
-    }
-
     private void setImage(Bitmap image) {
         ImageView imageView = (ImageView) findViewById(R.id.ImageView);
         imageView.setAdjustViewBounds(true);
@@ -197,5 +190,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
                 .setMessage("We could not open that image file. Please try again.")
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+    }
+
+    private void setupGestgures(){
+        gestureAggregator.addListener(new FishEyeListener(null));
+        gestureAggregator.addListener(new SwirlListener(new GestureInvokedListener() {
+                    @Override
+                    public void onGestureInvoked() {
+                        appManager.setFilterTask(new Swirl(appManager, getApplicationContext()));
+                    }
+                }));
+        gestureAggregator.addListener(new BulgeListener(null));
     }
 }

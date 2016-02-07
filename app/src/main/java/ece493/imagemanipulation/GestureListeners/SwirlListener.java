@@ -11,13 +11,13 @@ public class SwirlListener extends TwoFingerGesture{
     private static final int X_THRESHOLD = 100;
     private static final int Y_THRESHOLD = 100;
 
-    public SwirlListener(RenderScriptContext context) {
-        super(context);
+    public SwirlListener(GestureInvokedListener listener) {
+        super(listener);
     }
 
 
     @Override
-    protected void checkForGestureExecution() {
+    protected boolean gestureIsInvoked() {
         int xDifferenceDown =Math.abs(x1d - x2d);
         int xDifferenceUp =Math.abs(x1u - x2u);
 
@@ -28,8 +28,10 @@ public class SwirlListener extends TwoFingerGesture{
             if (Math.abs(xDifferenceDown - xDifferenceUp) < X_THRESHOLD){
                 //Gestgure rcognized!
                 Log.d("GESTURE", "Warp Gesture detected!!");
-                renderScriptContext.invokeTransform();
+                return true;
             }
         }
+
+        return false;
     }
 }

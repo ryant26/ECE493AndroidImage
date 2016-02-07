@@ -1,11 +1,8 @@
 package ece493.imagemanipulation.GestureListeners;
 
 import android.support.v4.view.MotionEventCompat;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
 
 /**
  * Created by ryan on 04/02/16.
@@ -13,10 +10,10 @@ import ece493.imagemanipulation.NonlinearTransforms.RenderScriptContext;
 public abstract class TwoFingerGesture implements View.OnTouchListener {
     protected int x1d, y1d, x2d, y2d, x1u, y1u, x2u, y2u;
     private boolean twoTouches = false;
-    protected RenderScriptContext renderScriptContext;
+    private GestureInvokedListener listener;
 
-    public TwoFingerGesture(RenderScriptContext context){
-        renderScriptContext = context;
+    public TwoFingerGesture(GestureInvokedListener listener){
+        this.listener = listener;
     }
 
 
@@ -75,7 +72,9 @@ public abstract class TwoFingerGesture implements View.OnTouchListener {
         x2u = getTouchX(e);
         y2u = getTouchY(e);
         if (twoTouches()){
-            checkForGestureExecution();
+            if(gestureIsInvoked()){
+                listener.onGestureInvoked();
+            }
         } else {
             resetTouchPositions();
         }
@@ -91,5 +90,5 @@ public abstract class TwoFingerGesture implements View.OnTouchListener {
         twoTouches = false;
     }
 
-    protected abstract void checkForGestureExecution();
+    protected abstract boolean gestureIsInvoked();
 }

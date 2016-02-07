@@ -42,7 +42,7 @@ public class AppManager extends Application{
 
     public boolean filterTaskRunning(){
         try{
-            return filterTask.getStatus() != AsyncTask.Status.FINISHED;
+            return (filterTask.getStatus() != AsyncTask.Status.FINISHED);
         } catch (NullPointerException e){
             return false;
         }
@@ -55,7 +55,7 @@ public class AppManager extends Application{
         }
     }
 
-    public void updateObservers(){
+    private void updateObservers(){
         for(Observer ob : observers){
             ob.update();
         }

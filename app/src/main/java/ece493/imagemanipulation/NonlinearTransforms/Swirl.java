@@ -1,6 +1,7 @@
 package ece493.imagemanipulation.NonlinearTransforms;
 
 import android.app.Activity;
+import android.content.Context;
 import android.renderscript.ScriptC;
 
 import ece493.imagemanipulation.AppManager;
@@ -11,7 +12,7 @@ import ece493.imagemanipulation.NonlinearTransoforms.ScriptC_swirl;
  */
 public class Swirl extends RenderScriptContext {
 
-    public Swirl(AppManager manager, Activity context) {
+    public Swirl(AppManager manager, Context context) {
         super(manager, context);
     }
 
@@ -22,6 +23,6 @@ public class Swirl extends RenderScriptContext {
         swirlScript.set_width(getBitmapWidth());
         swirlScript.set_input(inAllocation);
         swirlScript.set_output(outAllocation);
-        swirlScript.invoke_Swirl(0.1f);
+        swirlScript.invoke_Swirl(0.01f);
     }
 }

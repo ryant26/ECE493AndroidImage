@@ -14,10 +14,10 @@ public class BulgeListener extends GestureDetector.SimpleOnGestureListener imple
 
     @SuppressWarnings("deprecation")
     GestureDetector detector = new GestureDetector(this);
-    RenderScriptContext renderScriptContext;
+    GestureInvokedListener listener;
 
-    public BulgeListener(RenderScriptContext context){
-        renderScriptContext = context;
+    public BulgeListener(GestureInvokedListener listener){
+        this.listener = listener;
     }
 
     @Override
