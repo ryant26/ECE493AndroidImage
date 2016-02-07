@@ -3,6 +3,7 @@ package ece493.imagemanipulation.Utilities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Created by ryan on 11/01/16.
@@ -19,7 +20,7 @@ public class DialogHelper {
 
     public void showProgressDialog(){
         if (!context.isFinishing()){
-            progressDialog = DialogHelper.getFilterDialog(context);
+            getFilterDialog(context);
             progressDialog.show();
         }
     }
@@ -32,9 +33,11 @@ public class DialogHelper {
         }
     }
 
-    private static ProgressDialog getFilterDialog(Context context){
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle("Applying Filter");
+    private ProgressDialog getFilterDialog(Context context){
+        if (progressDialog == null){
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setTitle("Applying Filter");
+        }
         return  progressDialog;
     }
 }

@@ -12,13 +12,11 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
     int filterSize;
     ConvolutionFilter filter;
     AppManager manager;
-    boolean finishedFiltering;
 
     public FilterTask(int filterSize, ConvolutionFilter filter, AppManager manager){
         this.filterSize = filterSize;
         this.filter = filter;
         this.manager = manager;
-        finishedFiltering = false;
     }
 
 
@@ -76,11 +74,8 @@ public class FilterTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap result){
-        finishedFiltering = true;
         manager.setSelectedBitMap(result);
+        manager.setFilterTask(null);
     }
 
-    public boolean isFinishedFiltering(){
-        return finishedFiltering;
-    }
 }
