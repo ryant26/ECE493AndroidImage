@@ -73,3 +73,42 @@ void Swirl (double factor) {
         }
     }
 }
+
+void bulge(){
+
+    float centerX = width/2;
+    float centerY = height/2;
+
+    float bulgeRadius = min(centerX, centerY);
+    float bulgeRadius2 = bulgeRadius * bulgeRadius;
+    float bulgeFactor = 1.0f;
+
+    #pragma omp parallel for
+    for (int i=0; i < height; i++){
+        for (int j = 0; j < width; j++){
+
+            float dx = j - centerX;
+            float dy = i - centerY;
+            float r = dx*dx + dy*dy;
+
+            // Pixels not inside the bulge are unaffected
+            if (r == 0 || r > bulgeRadius2){
+                setPixelAt(j,i, getPixelAt(j, i));
+            } else {
+
+              // Bulging algorithm
+              float dist = (float)sqrt( r / bulgeRadius2);
+              float t = (float) pow( sin((float) (C_PI*0.5*dist)), bulgeFactor );
+
+               dx *= t;
+               dy *= t;
+
+               int srcX = centerX + dx;
+               int srcY = centerY + dy;
+
+               setPixelAt(j,i,getPixelAt(srcX, srcY));
+
+            }
+        }
+    }
+}

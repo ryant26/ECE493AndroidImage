@@ -5,7 +5,7 @@ import android.content.Context;
 import android.renderscript.ScriptC;
 
 import ece493.imagemanipulation.AppManager;
-import ece493.imagemanipulation.NonlinearTransoforms.ScriptC_swirl;
+import ece493.imagemanipulation.NonlinearTransoforms.ScriptC_transform;
 
 /**
  * Created by ryan on 06/02/16.
@@ -18,11 +18,6 @@ public class Swirl extends RenderScriptContext {
 
     @Override
     protected void invokeScript() {
-        ScriptC_swirl swirlScript = new ScriptC_swirl(tRS);
-        swirlScript.set_height(getBitmapHeight());
-        swirlScript.set_width(getBitmapWidth());
-        swirlScript.set_input(inAllocation);
-        swirlScript.set_output(outAllocation);
-        swirlScript.invoke_Swirl(0.01f);
+        tScript.invoke_Swirl(0.01f);
     }
 }

@@ -12,6 +12,7 @@ import android.util.Log;
 
 import ece493.imagemanipulation.AppManager;
 import ece493.imagemanipulation.GestureListeners.GestureInvokedListener;
+import ece493.imagemanipulation.NonlinearTransoforms.ScriptC_transform;
 
 /**
  * Created by ryan on 04/02/16.
@@ -19,6 +20,7 @@ import ece493.imagemanipulation.GestureListeners.GestureInvokedListener;
 public abstract class RenderScriptContext extends AsyncTask<Bitmap, Void, Bitmap>{
     private AppManager manager;
     private Context context;
+    protected ScriptC_transform tScript;
 
     protected Allocation inAllocation;
     protected Allocation outAllocation;
@@ -37,6 +39,12 @@ public abstract class RenderScriptContext extends AsyncTask<Bitmap, Void, Bitmap
                 Allocation.MipmapControl.MIPMAP_NONE, Allocation.USAGE_SCRIPT);
 
         outAllocation = Allocation.createTyped(tRS, inAllocation.getType());
+
+        tScript = new ScriptC_transform(tRS);
+        tScript.set_height(getBitmapHeight());
+        tScript.set_width(getBitmapWidth());
+        tScript.set_input(inAllocation);
+        tScript.set_output(outAllocation);
 
         invokeScript();
         outAllocation.copyTo(manager.getSelectedBitMap());

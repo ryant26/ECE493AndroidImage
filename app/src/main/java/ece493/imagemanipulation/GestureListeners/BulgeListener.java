@@ -24,6 +24,7 @@ public class BulgeListener extends GestureDetector.SimpleOnGestureListener imple
     public void onLongPress(MotionEvent e){
         // Buldgge gesture detected!
         Log.d("GESTURE", "Bulge gesture detected");
+        listener.onGestureInvoked();
    }
 
     @Override

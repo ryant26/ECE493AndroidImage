@@ -26,6 +26,7 @@ import ece493.imagemanipulation.GestureListeners.FishEyeListener;
 import ece493.imagemanipulation.GestureListeners.GestureAggregator;
 import ece493.imagemanipulation.GestureListeners.GestureInvokedListener;
 import ece493.imagemanipulation.GestureListeners.SwirlListener;
+import ece493.imagemanipulation.NonlinearTransforms.Bulge;
 import ece493.imagemanipulation.NonlinearTransforms.Swirl;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
@@ -63,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
         photoHelper = new PhotoHelper(this);
         appManager = ((AppManager) getApplicationContext());
         appManager.addObserver(this);
-
-
-
     }
 
     @Override
@@ -200,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
                         appManager.setFilterTask(new Swirl(appManager, getApplicationContext()));
                     }
                 }));
-        gestureAggregator.addListener(new BulgeListener(null));
+        gestureAggregator.addListener(new BulgeListener(new GestureInvokedListener() {
+            @Override
+            public void onGestureInvoked() {
+                appManager.setFilterTask(new Bulge(appManager, getApplicationContext()));
+            }
+        }));
     }
 }
