@@ -28,7 +28,6 @@ void Swirl (double factor) {
     double cX = (double)width/2.0f;
     double cY = (double)height/2.0f;
 
-    #pragma omp parallel for
     for (int i=0; i < height; i++) {
         float relY = cY-i;
         for (int j=0; j < width; j++) {
@@ -74,6 +73,9 @@ void Swirl (double factor) {
     }
 }
 
+
+// Adapted this algorithm from the one at supercomputingblog.com
+// for swirl image warping
 void bulge(){
 
     float centerX = width/2;
@@ -83,7 +85,6 @@ void bulge(){
     float bulgeRadius2 = bulgeRadius * bulgeRadius;
     float bulgeFactor = 1.0f;
 
-    #pragma omp parallel for
     for (int i=0; i < height; i++){
         for (int j = 0; j < width; j++){
 
