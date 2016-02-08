@@ -23,15 +23,16 @@ public class SwirlListener extends TwoFingerGesture{
 
         int yDifferenceDown = Math.abs(y1d - y2d);
         int yDifferenceUp = Math.abs(y1u - y2u);
+        boolean out = false;
 
         if (yDifferenceUp > Y_THRESHOLD){
             if (Math.abs(xDifferenceDown - xDifferenceUp) < X_THRESHOLD){
                 //Gestgure rcognized!
-                Log.d("GESTURE", "Warp Gesture detected!!");
-                return true;
+                Log.d("GESTURE", "Swirl Gesture detected!!");
+                out = true;
             }
         }
-
-        return false;
+        resetTouchPositions();
+        return out;
     }
 }

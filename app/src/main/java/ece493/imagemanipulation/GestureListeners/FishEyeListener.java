@@ -21,14 +21,17 @@ public class FishEyeListener extends TwoFingerGesture {
         int xDifferenceDown =Math.abs(x1d - x2d);
         int xDifferenceUp =Math.abs(x1u - x2u);
 
+        boolean out = false;
+
         if (xDifferenceDown - (xThreshold * 1.5) < xDifferenceUp
                 && xDifferenceDown + xThreshold > xDifferenceUp){
             if(y1u > y1d + yThreshold && y2u > y2d + yThreshold){
                 // The gesture is detected
                 Log.d("GESTURE", "Fish Eye gesture detected!!");
-                return true;
+                out = true;
             }
         }
-        return false;
+        resetTouchPositions();
+        return out;
     }
 }
