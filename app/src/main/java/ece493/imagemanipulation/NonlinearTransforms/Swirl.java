@@ -18,6 +18,6 @@ public class Swirl extends RenderScriptContext {
 
     @Override
     protected void invokeScript() {
-        tScript.invoke_Swirl(0.01f);
+        tScript.invoke_Swirl(0.001f);
     }
 }

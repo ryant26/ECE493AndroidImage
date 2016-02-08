@@ -27,6 +27,7 @@ import ece493.imagemanipulation.GestureListeners.GestureAggregator;
 import ece493.imagemanipulation.GestureListeners.GestureInvokedListener;
 import ece493.imagemanipulation.GestureListeners.SwirlListener;
 import ece493.imagemanipulation.NonlinearTransforms.Bulge;
+import ece493.imagemanipulation.NonlinearTransforms.FishEye;
 import ece493.imagemanipulation.NonlinearTransforms.Swirl;
 import ece493.imagemanipulation.Utilities.DialogHelper;
 import ece493.imagemanipulation.Utilities.Observer;
@@ -191,13 +192,21 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void setupGestgures(){
-        gestureAggregator.addListener(new FishEyeListener(null));
+
+        gestureAggregator.addListener(new FishEyeListener(new GestureInvokedListener() {
+            @Override
+            public void onGestureInvoked() {
+                appManager.setFilterTask(new FishEye(appManager, getApplicationContext()));
+            }
+        }));
+
         gestureAggregator.addListener(new SwirlListener(new GestureInvokedListener() {
                     @Override
                     public void onGestureInvoked() {
                         appManager.setFilterTask(new Swirl(appManager, getApplicationContext()));
                     }
                 }));
+
         gestureAggregator.addListener(new BulgeListener(new GestureInvokedListener() {
             @Override
             public void onGestureInvoked() {

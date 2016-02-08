@@ -22,6 +22,8 @@ void setPixelAt(int x, int y, uchar4 pixel) {
 	rsSetElementAt_uchar4(output, pixel, x, y);
 }
 
+// Adapted this algorithm from the one at supercomputingblog.com
+// for swirl image warping
 void Swirl (double factor) {
 
     // This function effectively swirls an image
@@ -74,8 +76,7 @@ void Swirl (double factor) {
 }
 
 
-// Adapted this algorithm from the one at supercomputingblog.com
-// for swirl image warping
+
 void bulge(){
 
     float centerX = width/2;
@@ -109,6 +110,53 @@ void bulge(){
 
                setPixelAt(j,i,getPixelAt(srcX, srcY));
 
+            }
+        }
+    }
+}
+
+// Spherical fish eye
+void fishEye(){
+    for(int i=0; i < height; i++){
+
+        // Normalized
+        float ni =  ((2*(float)i)/height)-1.0;
+        float ni2 = ni*ni;
+
+        for (int j = 0; j < width; j++){
+            // Normalized
+            float nj = ((2*(float)j)/width)-1.0;
+            float nj2 = nj * nj;
+
+
+            //Distance from (0,0)
+            float r = sqrt(ni2 + nj2);
+
+            // Don't care about pixels outside the circle
+            if (0.0 <= r && r <= 1.0){
+
+                //New radius
+                float nr = sqrt((float)(1.0-(r*r)));
+                nr = (r +  (1.0-nr)) / 2.0;
+
+
+                if (nr <= 1.0){
+
+                    // Polar cords angle
+                    float a = atan2(ni, nj);
+
+                    //Compute new coords from new radius
+                    float njn = nr * cos(a);
+                    float nin = nr * sin(a);
+
+                    // Back to cartesian coords
+                    int srcX = (int) (((njn+1)*width)/2.0);
+                    int srcY = (int) (((nin+1)*height)/2.0);
+
+                    if( srcX >= 0 && srcY >=0 && srcX < width && srcY < height){
+                        setPixelAt(j, i, getPixelAt(srcX, srcY));
+                    }
+                }
             }
         }
     }
